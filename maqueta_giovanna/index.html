@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giovanna Store | Moda Circular & Novedades de Temporada</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fdf8f6',
+                            100: '#f2e8e5',
+                            200: '#e8d5ce',
+                            500: '#d97757', // Terracota cálido
+                            600: '#c25e3e',
+                            700: '#a24628',
+                            900: '#542211',
+                        },
+                        festive: {
+                            500: '#15803d', // Verde navideño
+                            600: '#166534',
+                            700: '#b91c1c', // Rojo navideño
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .badge-pulse {
+            animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.03); }
+        }
+    </style>
+</head>
+<body class="bg-amber-50/30 text-stone-800 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Top Announcement Bar (Temporada Navidad) -->
+    <div class="bg-gradient-to-r from-red-700 via-rose-700 to-emerald-800 text-white text-xs sm:text-sm py-2 px-4 text-center font-medium shadow-sm flex items-center justify-center gap-2">
+        <i data-lucide="sparkles" class="w-4 h-4 text-amber-300 animate-spin" style="animation-duration: 4s;"></i>
+        <span>¡Llegó la Colección de Navidad a <strong>Giovanna Store</strong>! Adornos, regalos y detalles únicos.</span>
+        <a href="#catalogo" onclick="filterCategory('navidad')" class="underline underline-offset-2 font-bold hover:text-amber-200 ml-1">Ver Especial Navidad &rarr;</a>
+    </div>
+
+    <!-- Navegación -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo / Marca -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-full bg-brand-500 text-white flex items-center justify-center font-serif text-xl font-bold shadow-md shadow-brand-500/20 group-hover:bg-brand-600 transition-colors">
+                        G
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-serif text-2xl font-bold tracking-tight text-stone-900 leading-tight">Giovanna<span class="text-brand-500">.</span></span>
+                        <span class="text-[10px] tracking-widest uppercase font-semibold text-stone-500">Store & Variety</span>
+                    </div>
+                </a>
+
+                <!-- Navegación Desktop -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-stone-600">
+                    <a href="#inicio" class="hover:text-brand-600 transition-colors">Inicio</a>
+                    <a href="#catalogo" class="hover:text-brand-600 transition-colors">Catálogo</a>
+                    <a href="#sobre-giovanna" class="hover:text-brand-600 transition-colors">Sobre Giovanna</a>
+                    <a href="#testimonios" class="hover:text-brand-600 transition-colors">Opiniones</a>
+                    <a href="#contacto" class="hover:text-brand-600 transition-colors">Contacto</a>
+                </nav>
+
+                <!-- Botón Acción Directa WhatsApp -->
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="https://wa.me/1234567890?text=Hola%20Giovanna!%20Me%20gustaria%20consultar%20sobre%20tus%20productos." 
+                       target="_blank" 
+                       rel="noopener"
+                       class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        <span>Hablar con Giovanna</span>
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-stone-600 hover:bg-stone-100 focus:outline-none" aria-label="Abrir Menú">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-stone-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#inicio" class="block py-2 text-stone-700 font-medium hover:text-brand-600">Inicio</a>
+            <a href="#catalogo" class="block py-2 text-stone-700 font-medium hover:text-brand-600">Catálogo de Productos</a>
+            <a href="#sobre-giovanna" class="block py-2 text-stone-700 font-medium hover:text-brand-600">Sobre Giovanna</a>
+            <a href="#testimonios" class="block py-2 text-stone-700 font-medium hover:text-brand-600">Testimonios</a>
+            <a href="#contacto" class="block py-2 text-stone-700 font-medium hover:text-brand-600">Contacto</a>
+            <a href="https://wa.me/1234567890?text=Hola%20Giovanna!%20Me%20gustaria%20consultar%20sobre%20tus%20productos." target="_blank" class="w-full mt-2 inline-flex items-center justify-center gap-2 bg-emerald-600 text-white py-3 rounded-xl font-semibold shadow">
+                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                <span>Contacto WhatsApp</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Héroe Principal -->
+    <section id="inicio" class="relative overflow-hidden bg-gradient-to-b from-amber-100/50 via-amber-50/20 to-transparent py-16 lg:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-100 text-brand-700 text-xs sm:text-sm font-semibold tracking-wide">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        <span>Variedad, Calidad & Moda Circular</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-stone-900 leading-[1.15]">
+                        Descubre tesoros únicos e insuperables en <span class="text-brand-500 underline decoration-brand-200">Giovanna Store</span>
+                    </h1>
+
+                    <p class="text-stone-600 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Seleccionamos minuciosamente prendas de <strong>ropa usada vintage y seminueva</strong> de gran calidad, además de traerte lo mejor de las <strong>tendencias y productos de temporada</strong>.
+                    </p>
+
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#catalogo" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-brand-500/25 transition-all hover:-translate-y-0.5">
+                            <span>Explorar Catálogo</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#catalogo" onclick="filterCategory('navidad')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white font-semibold px-7 py-3.5 rounded-xl shadow-md transition-all hover:-translate-y-0.5">
+                            <i data-lucide="gift" class="w-4 h-4"></i>
+                            <span>Especial Navidad</span>
+                        </a>
+                    </div>
+
+                    <!-- Métricas / Confianza -->
+                    <div class="pt-8 grid grid-cols-3 gap-4 border-t border-stone-200/80 max-w-md mx-auto lg:mx-0">
+                        <div>
+                            <p class="font-serif text-2xl font-bold text-stone-900">100%</p>
+                            <p class="text-xs text-stone-500">Prendas Verificadas</p>
+                        </div>
+                        <div>
+                            <p class="font-serif text-2xl font-bold text-stone-900">+500</p>
+                            <p class="text-xs text-stone-500">Clientes Felices</p>
+                        </div>
+                        <div>
+                            <p class="font-serif text-2xl font-bold text-stone-900">Envíos</p>
+                            <p class="text-xs text-stone-500">Y Entregas Locales</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imagen Destacada Héroe -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Decoración de Fondo -->
+                        <div class="absolute -top-6 -left-6 w-72 h-72 bg-brand-200/50 rounded-full blur-3xl -z-10"></div>
+                        <div class="absolute -bottom-6 -right-6 w-72 h-72 bg-amber-200/50 rounded-full blur-3xl -z-10"></div>
+
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                            <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&q=80&w=800" 
+                                 alt="Ropa y Variedades de Giovanna" 
+                                 class="w-full h-[420px] object-cover hover:scale-105 transition-transform duration-700">
+                            
+                            <div class="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent"></div>
+                            
+                            <!-- Card Flotante Navidad -->
+                            <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl flex items-center gap-4 border border-stone-100">
+                                <div class="w-12 h-12 rounded-xl bg-red-100 text-red-700 flex items-center justify-center shrink-0">
+                                    <i data-lucide="gift" class="w-6 h-6"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <span class="text-xs font-bold text-red-600 uppercase tracking-wider block">¡En Temporada!</span>
+                                    <h2 class="text-sm font-semibold text-stone-900 truncate">Colección Navideña Disponible</h2>
+                                    <p class="text-xs text-stone-500 truncate">Adornos, luces y regalos especiales.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Destacados / Categorías principales -->
+    <section class="py-12 bg-white border-y border-stone-200/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-6">
+                
+                <!-- Card 1: Moda Circular -->
+                <div onclick="filterCategory('ropa')" class="cursor-pointer group p-6 rounded-2xl bg-amber-50/50 border border-stone-200/80 hover:border-brand-500 hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shirt" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-stone-900 mb-2 group-hover:text-brand-600 transition-colors">Moda Circular & Vintage</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed mb-4">Ropa usada seleccionada pieza por pieza. Excelente estado, marcas exclusivas y estilo único sostenible.</p>
+                    <span class="inline-flex items-center text-xs font-bold text-brand-600 group-hover:translate-x-1 transition-transform">Ver Prendas &rarr;</span>
+                </div>
+
+                <!-- Card 2: Temporada Navidad -->
+                <div onclick="filterCategory('navidad')" class="cursor-pointer group p-6 rounded-2xl bg-red-50/50 border border-red-200/80 hover:border-red-500 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 opacity-10 text-red-800">
+                        <i data-lucide="trees" class="w-32 h-32"></i>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-red-600 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="sparkles" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-stone-900 mb-2 group-hover:text-red-700 transition-colors">Especial Navideño</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed mb-4">Adornos, árboles, luces y detalles ideales para llenar tu hogar de magia en estas fiestas.</p>
+                    <span class="inline-flex items-center text-xs font-bold text-red-700 group-hover:translate-x-1 transition-transform">Ver Cosas de Navidad &rarr;</span>
+                </div>
+
+                <!-- Card 3: Novedades & Oportunidades -->
+                <div onclick="filterCategory('lanzamientos')" class="cursor-pointer group p-6 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 hover:border-emerald-500 hover:shadow-xl transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="package-plus" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-stone-900 mb-2 group-hover:text-emerald-700 transition-colors">Próximos Lanzamientos</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed mb-4">Artículos nuevos que llegan constantemente. ¡Sé la primera persona en enterarte y reservarlos!</p>
+                    <span class="inline-flex items-center text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition-transform">Descubrir Novedades &rarr;</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Catálogo de Productos con Buscador y Filtros -->
+    <section id="catalogo" class="py-16 bg-amber-50/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Encabezado de Catálogo -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                <div>
+                    <span class="text-brand-600 font-semibold text-xs uppercase tracking-widest block mb-1">Galería de Productos</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900">Catálogo de Giovanna</h2>
+                    <p class="text-stone-600 text-sm mt-1">Explora las prendas y artículos disponibles hoy mismo.</p>
+                </div>
+
+                <!-- Buscador de productos -->
+                <div class="relative w-full md:w-80">
+                    <i data-lucide="search" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                    <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="Buscar prendas, adornos, marcas..." class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-stone-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 shadow-sm transition-all">
+                </div>
+            </div>
+
+            <!-- Botones de Filtro -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none" id="filter-buttons">
+                <button onclick="filterCategory('todos')" class="filter-btn active-filter px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap bg-stone-900 text-white shadow">
+                    Todos los Productos
+                </button>
+                <button onclick="filterCategory('navidad')" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap bg-white text-stone-700 hover:bg-red-50 hover:text-red-700 border border-stone-200 flex items-center gap-1.5">
+                    <i data-lucide="gift" class="w-4 h-4 text-red-600"></i>
+                    <span>Especial Navidad</span>
+                </button>
+                <button onclick="filterCategory('ropa')" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap bg-white text-stone-700 hover:bg-brand-50 hover:text-brand-600 border border-stone-200">
+                    Ropa Usada / Vintage
+                </button>
+                <button onclick="filterCategory('lanzamientos')" class="filter-btn px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap bg-white text-stone-700 hover:bg-emerald-50 hover:text-emerald-700 border border-stone-200">
+                    Próximas Llegadas
+                </button>
+            </div>
+
+            <!-- Grilla de Productos -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="products-grid">
+                <!-- Los productos se inyectan dinámicamente con JS -->
+            </div>
+
+            <!-- Mensaje si no hay resultados -->
+            <div id="no-results" class="hidden text-center py-16">
+                <div class="w-16 h-16 mx-auto mb-4 text-stone-300 flex items-center justify-center bg-stone-100 rounded-full">
+                    <i data-lucide="search-x" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-stone-800">No encontramos productos coincidentes</h3>
+                <p class="text-sm text-stone-500 mt-1">Prueba intentando con otra palabra o cambiando el filtro de categoría.</p>
+                <button onclick="filterCategory('todos')" class="mt-4 px-4 py-2 bg-brand-500 text-white text-xs font-semibold rounded-lg hover:bg-brand-600">Mostrar Todo</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Sección Sobre Giovanna (Historia del Emprendimiento) -->
+    <section id="sobre-giovanna" class="py-20 bg-white border-t border-stone-200/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                
+                <div class="relative">
+                    <div class="relative rounded-3xl overflow-hidden shadow-xl border-4 border-amber-50">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800" alt="Giovanna Emprendedora" class="w-full h-[450px] object-cover">
+                    </div>
+                    <!-- Badge de Emprendedora -->
+                    <div class="absolute -bottom-6 -right-2 sm:right-6 bg-brand-500 text-white p-5 rounded-2xl shadow-lg max-w-xs">
+                        <p class="font-serif font-bold text-lg leading-tight">"Amo curar piezas únicas para mis clientes."</p>
+                        <p class="text-xs text-brand-100 mt-1">— Giovanna, Fundadora</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <span class="text-brand-600 font-semibold text-xs uppercase tracking-widest">El Corazón del Negocio</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900">Hola, soy Giovanna 👋</h2>
+                    <p class="text-stone-600 leading-relaxed">
+                        Bienvenidos a mi espacio. Como emprendedora apasionada, me dedico a buscar y seleccionar prendas de vestir de excelente calidad que merecen una segunda vida, promoviendo la <strong>moda consciente y sostenible</strong>.
+                    </p>
+                    <p class="text-stone-600 leading-relaxed">
+                        Además, me encanta adaptarme a las distintas épocas del año trayendo <strong>artículos de temporada seleccionados</strong>, como adornos navideños, accesorios de verano y novedades que sorprendan y alegren a mis clientes.
+                    </p>
+
+                    <div class="space-y-3 pt-2">
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </div>
+                            <span class="text-stone-700 text-sm"><strong>Selección Rigurosa:</strong> Cada prenda de ropa es lavada, inspeccionada y empaquetada con amor.</span>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </div>
+                            <span class="text-stone-700 text-sm"><strong>Atención Personalizada:</strong> Te respondo directamente por WhatsApp para aclarar dudas de medidas y detalles.</span>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </div>
+                            <span class="text-stone-700 text-sm"><strong>Precios Accesibles:</strong> Moda bonita y artículos de temporada sin gastar de más.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios de Clientes -->
+    <section id="testimonios" class="py-16 bg-stone-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-brand-500 font-semibold text-xs uppercase tracking-widest block mb-1">Opiniones Reales</span>
+                <h2 class="font-serif text-3xl font-bold">Lo que dicen mis clientes</h2>
+                <p class="text-stone-400 text-sm mt-2">La confianza y la satisfacción de quienes compran en Giovanna Store es lo más importante.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Testimonio 1 -->
+                <div class="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/60 flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-amber-400 gap-1 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                        </div>
+                        <p class="text-stone-300 text-sm italic mb-6">"Le compré una chaqueta de jeans de marca casi nueva y unos adornos para el árbol de Navidad. Todo llegó impecable y súper rápido. Giovanna es una linda persona al atender."</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-stone-700 text-amber-300 flex items-center justify-center font-bold">
+                            MC
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">María Camila R.</p>
+                            <p class="text-xs text-stone-400">Cliente Frecuente</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonio 2 -->
+                <div class="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/60 flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-amber-400 gap-1 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                        </div>
+                        <p class="text-stone-300 text-sm italic mb-6">"Me encanta que las prendas vienen limpias y con olor agradable. La ropa usada que vende parece de tienda de ropa vintage europea."</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-stone-700 text-amber-300 flex items-center justify-center font-bold">
+                            PA
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Patricia A.</p>
+                            <p class="text-xs text-stone-400">Compró Ropa Vintage</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonio 3 -->
+                <div class="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/60 flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-amber-400 gap-1 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                        </div>
+                        <p class="text-stone-300 text-sm italic mb-6">"Le encargué cosas para decorar mi casa en Navidad y quedé fascinada. Todo a muy buen precio y la atención por WhatsApp fue muy amable."</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-stone-700 text-amber-300 flex items-center justify-center font-bold">
+                            LS
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Loreto S.</p>
+                            <p class="text-xs text-stone-400">Compró Adornos Navideños</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Call-to-Action WhatsApp -->
+    <section id="contacto" class="py-16 bg-gradient-to-r from-brand-600 to-brand-700 text-white relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 text-center relative z-10 space-y-6">
+            <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm border border-white/20">
+                <i data-lucide="shopping-bag" class="w-8 h-8 text-amber-200"></i>
+            </div>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold">¿Tienes dudas o deseas reservar una prenda?</h2>
+            <p class="text-brand-100 max-w-xl mx-auto text-sm sm:text-base">
+                Como vendemos piezas únicas de ropa y stock limitado de temporada, ¡los productos vuelan! Contáctanos directamente por WhatsApp y apartamos tu compra.
+            </p>
+            <div>
+                <a href="https://wa.me/1234567890?text=Hola%20Giovanna,%20vi%20tu%20pagina%20web%20y%20me%20gustaria%20comprar%20o%20consultar." 
+                   target="_blank" 
+                   rel="noopener"
+                   class="inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-8 py-4 rounded-2xl shadow-xl transition-all hover:scale-105">
+                    <i data-lucide="message-circle" class="w-6 h-6"></i>
+                    <span>Chatear Directamente por WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Detalle de Producto -->
+    <div id="product-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeModal()" class="absolute top-4 right-4 bg-stone-100 hover:bg-stone-200 p-2 rounded-full text-stone-600 z-10 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div id="modal-content">
+                <!-- Contenido generado por JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de Página -->
+    <footer class="bg-stone-950 text-stone-400 py-12 border-t border-stone-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                
+                <!-- Columna 1 -->
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-brand-500 text-white flex items-center justify-center font-serif font-bold">G</div>
+                        <span class="font-serif text-xl font-bold text-white">Giovanna Store</span>
+                    </div>
+                    <p class="text-xs text-stone-400 leading-relaxed">
+                        Emprendimiento local dedicado a la moda circular y variedad de artículos seleccionados de temporada.
+                    </p>
+                </div>
+
+                <!-- Columna 2 -->
+                <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Categorías</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#catalogo" onclick="filterCategory('navidad')" class="hover:text-white transition-colors">Cosas de Navidad</a></li>
+                        <li><a href="#catalogo" onclick="filterCategory('ropa')" class="hover:text-white transition-colors">Ropa Usada Selection</a></li>
+                        <li><a href="#catalogo" onclick="filterCategory('lanzamientos')" class="hover:text-white transition-colors">Próximos Arribos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 3 -->
+                <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Navegación</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#inicio" class="hover:text-white transition-colors">Inicio</a></li>
+                        <li><a href="#sobre-giovanna" class="hover:text-white transition-colors">Sobre Giovanna</a></li>
+                        <li><a href="#testimonios" class="hover:text-white transition-colors">Testimonios</a></li>
+                        <li><a href="#contacto" class="hover:text-white transition-colors">Contacto Directo</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna 4: Redes & WhatsApp -->
+                <div>
+                    <h4 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Contacto & Redes</h4>
+                    <div class="space-y-3 text-xs">
+                        <p class="flex items-center gap-2">
+                            <i data-lucide="phone" class="w-4 h-4 text-brand-500"></i>
+                            <span>+56 9 1234 5678 (WhatsApp)</span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-brand-500"></i>
+                            <span>Entregas presenciales y envíos</span>
+                        </p>
+                        <div class="flex gap-3 pt-2">
+                            <a href="#" class="w-8 h-8 rounded-full bg-stone-800 hover:bg-brand-500 hover:text-white flex items-center justify-center transition-colors" aria-label="Instagram">
+                                <i data-lucide="instagram" class="w-4 h-4"></i>
+                            </a>
+                            <a href="#" class="w-8 h-8 rounded-full bg-stone-800 hover:bg-brand-500 hover:text-white flex items-center justify-center transition-colors" aria-label="Facebook">
+                                <i data-lucide="facebook" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 border-t border-stone-800 text-center text-xs text-stone-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p>&copy; <span id="year"></span> Giovanna Store & Variety. Todos los derechos reservados.</p>
+                <p>Diseñado para emprendedores vibrantes ✨</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        // Datos Ficticios de Productos
+        const products = [
+            {
+                id: 1,
+                name: "Juego de Esferas Navideñas Doradas & Rojas (Pack x12)",
+                category: "navidad",
+                price: "$8.990",
+                badge: "Navidad",
+                badgeColor: "bg-red-100 text-red-700 border-red-200",
+                image: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&q=80&w=600",
+                description: "Hermosas esferas brillantes y mate para decorar tu árbol con estilo clásico y festivo. Excelente acabado.",
+                status: "Disponible"
+            },
+            {
+                id: 2,
+                name: "Chaqueta Denim Vintage Ajustada Size M",
+                category: "ropa",
+                price: "$14.500",
+                badge: "Segunda Vida / Única",
+                badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
+                image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=600",
+                description: "Chaqueta de mezclilla retro en perfecto estado. Lavada, desinfectada y lista para usarse. Talla M.",
+                status: "Única Unidad"
+            },
+            {
+                id: 3,
+                name: "Guirnalda de Luces LED Cálidas Navideñas 10m",
+                category: "navidad",
+                price: "$6.500",
+                badge: "Navidad",
+                badgeColor: "bg-red-100 text-red-700 border-red-200",
+                image: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&q=80&w=600",
+                description: "Luces cálidas con varios modos de parpadeo. Ideales para interiores, balcones o árbol navideño.",
+                status: "Disponible"
+            },
+            {
+                id: 4,
+                name: "Tapado / Abrigo Tejido Suave Color Beige",
+                category: "ropa",
+                price: "$12.000",
+                badge: "Segunda Vida",
+                badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
+                image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=600",
+                description: "Hermoso tapado de punto suave, ideal para tardes frescas. Sin detalles, calidad premium seleccionada.",
+                status: "Única Unidad"
+            },
+            {
+                id: 5,
+                name: "Centro de Mesa Festivo con Piñas y Velas",
+                category: "navidad",
+                price: "$11.900",
+                badge: "Navidad",
+                badgeColor: "bg-red-100 text-red-700 border-red-200",
+                image: "https://images.unsplash.com/photo-1513297887119-d46091b24bfa?auto=format&fit=crop&q=80&w=600",
+                description: "Adorno de mesa artesanal con detalles de madera, follaje verde y piñas naturales perfumadas.",
+                status: "Últimas piezas"
+            },
+            {
+                id: 6,
+                name: "Blusa Floreada de Seda Sintética Talla L",
+                category: "ropa",
+                price: "$7.500",
+                badge: "Moda Circular",
+                badgeColor: "bg-amber-100 text-amber-800 border-amber-200",
+                image: "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&q=80&w=600",
+                description: "Blusa fresca y liviana con estampado floral primaveral. Como nueva, súper cuidada.",
+                status: "Única Unidad"
+            },
+            {
+                id: 7,
+                name: "Set Navideño de Botas para Dulces y Regalos",
+                category: "navidad",
+                price: "$5.990",
+                badge: "Navidad",
+                badgeColor: "bg-red-100 text-red-700 border-red-200",
+                image: "https://images.unsplash.com/photo-1543258103-a62bdc06ff8a?auto=format&fit=crop&q=80&w=600",
+                description: "Pack de 2 botas afelpadas con bordados de Papa Noel y Muñeco de Nieve para colgar.",
+                status: "Disponible"
+            },
+            {
+                id: 8,
+                name: "Vestido Casual Elegante Color Esmeralda (Llegada Próxima)",
+                category: "lanzamientos",
+                price: "Por Confirmar",
+                badge: "Próximamente",
+                badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
+                image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&q=80&w=600",
+                description: "Llegando en el próximo lote de ropa. Puedes reservarlo con anticipación por WhatsApp.",
+                status: "En Camino"
+            }
+        ];
+
+        let currentCategory = 'todos';
+
+        // Renderizar productos en pantalla
+        function renderProducts(items) {
+            const grid = document.getElementById('products-grid');
+            const noResults = document.getElementById('no-results');
+
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.innerHTML = items.map(product => {
+                const encodedMsg = encodeURIComponent(`Hola Giovanna! Estoy interesada/o en el producto: "${product.name}" (${product.price}). ¿Está disponible?`);
+                const whatsappUrl = `https://wa.me/1234567890?text=${encodedMsg}`;
+
+                return `
+                <div class="bg-white rounded-2xl border border-stone-200/80 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <!-- Imagen con Badge -->
+                        <div class="relative h-56 overflow-hidden bg-stone-100">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 text-[11px] font-bold px-3 py-1 rounded-full border shadow-sm ${product.badgeColor}">
+                                ${product.badge}
+                            </span>
+                        </div>
+
+                        <!-- Info del Producto -->
+                        <div class="p-5">
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <span class="text-xs text-stone-400 font-medium">${product.status}</span>
+                                <span class="font-bold text-brand-600 text-lg">${product.price}</span>
+                            </div>
+                            <h3 class="font-serif font-bold text-stone-900 text-base leading-snug group-hover:text-brand-600 transition-colors line-clamp-2">
+                                ${product.name}
+                            </h3>
+                            <p class="text-stone-500 text-xs mt-2 line-clamp-2 leading-relaxed">
+                                ${product.description}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="p-5 pt-0 space-y-2">
+                        <button onclick="openModal(${product.id})" class="w-full py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-xl transition-colors">
+                            Ver Detalle
+                        </button>
+                        <a href="${whatsappUrl}" target="_blank" rel="noopener" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-xs font-bold transition-colors shadow">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            <span>Pedir por WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            // Re-inicializar iconos Lucide generados dinámicamente
+            lucide.createIcons();
+        }
+
+        // Filtrar por categoría
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // Actualizar estilo de botones
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-stone-900', 'text-white', 'shadow');
+                btn.classList.add('bg-white', 'text-stone-700');
+            });
+
+            // Filtrar lista
+            let filtered = products;
+            if (category !== 'todos') {
+                filtered = products.filter(p => p.category === category);
+            }
+
+            // Limpiar buscador
+            document.getElementById('search-input').value = '';
+            renderProducts(filtered);
+        }
+
+        // Buscador en tiempo real
+        function searchProducts() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = products.filter(p => {
+                const matchesCategory = currentCategory === 'todos' || p.category === currentCategory;
+                const matchesQuery = p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query);
+                return matchesCategory && matchesQuery;
+            });
+            renderProducts(filtered);
+        }
+
+        // Abrir Modal de Producto
+        function openModal(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            const encodedMsg = encodeURIComponent(`Hola Giovanna! Quiero consultar por: "${product.name}" (${product.price}).`);
+            const whatsappUrl = `https://wa.me/1234567890?text=${encodedMsg}`;
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="sm:flex">
+                    <div class="sm:w-1/2 h-64 sm:h-auto bg-stone-100 relative">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 sm:w-1/2 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${product.badgeColor} inline-block mb-2">
+                                ${product.badge}
+                            </span>
+                            <h3 class="font-serif font-bold text-xl text-stone-900 mb-2">${product.name}</h3>
+                            <p class="text-2xl font-bold text-brand-600 mb-4">${product.price}</p>
+                            <p class="text-stone-600 text-xs leading-relaxed mb-4">${product.description}</p>
+                            <p class="text-xs text-stone-400 font-medium mb-6">Estado: <span class="text-stone-700 font-semibold">${product.status}</span></p>
+                        </div>
+                        <a href="${whatsappUrl}" target="_blank" rel="noopener" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-xs shadow transition-colors">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            <span>Consultar Disponibilidad</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('product-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        // Cerrar Modal
+        function closeModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        // Toggle Menú Móvil
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Inicialización
+        window.onload = function() {
+            document.getElementById('year').textContent = new Date().getFullYear();
+            renderProducts(products);
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
